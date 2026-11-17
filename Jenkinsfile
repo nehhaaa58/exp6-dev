@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -25,6 +29,17 @@ pipeline {
             steps {
                 bat 'mvn package'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Maven CI/CD Pipeline Successful!'
+            archiveArtifacts artifacts: 'target/*.jar'
+        }
+
+        failure {
+            echo 'Pipeline Failed!'
         }
     }
 }
